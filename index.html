@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fieldscope — AR Model Viewer</title>
+<link rel="stylesheet" href="style.css" />
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="mark">
+      <span class="mark-dot"></span>
+      <span class="mark-text">FIELDSCOPE</span>
+    </div>
+    <div class="quota" id="quota">— / — slots used</div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Drop a model. Walk around it in the room.</h1>
+      <p>Upload a .glb file and view it in augmented reality on your phone — no app, no account.</p>
+    </section>
+
+    <section class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload a 3D model">
+      <input type="file" id="fileInput" accept=".glb,.gltf,.usdz" hidden />
+      <div class="dropzone-inner">
+        <svg class="dz-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4 L34 12 V28 L20 36 L6 28 V12 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M20 4 V20 M20 20 L34 12 M20 20 L6 12" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <p class="dz-label">Drag a .glb / .gltf / .usdz file here, or click to browse</p>
+        <p class="dz-limits" id="dzLimits">up to 50 MB · glb, gltf, usdz</p>
+      </div>
+    </section>
+
+    <p class="upload-status" id="uploadStatus" role="status" aria-live="polite"></p>
+
+    <section class="gallery-section">
+      <div class="gallery-head">
+        <h2>Your models</h2>
+        <span class="gallery-count" id="galleryCount">0 stored</span>
+      </div>
+      <div class="gallery" id="gallery">
+        <p class="empty-state" id="emptyState">Nothing uploaded yet. Models you add stay in this browser only.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="viewer-overlay" id="viewerOverlay" aria-hidden="true">
+    <div class="viewer-panel">
+      <div class="viewer-head">
+        <span class="viewer-name" id="viewerName"></span>
+        <button class="viewer-close" id="viewerClose" aria-label="Close viewer">✕</button>
+      </div>
+      <model-viewer
+        id="modelViewer"
+        camera-controls
+        auto-rotate
+        ar
+        ar-modes="scene-viewer webxr quick-look"
+        shadow-intensity="1"
+        exposure="1"
+        environment-image="neutral"
+        touch-action="pan-y">
+        <button slot="ar-button" class="ar-button">
+          View in your space
+        </button>
+        <div class="progress-bar" slot="progress-bar">
+          <div class="update-bar"></div>
+        </div>
+      </model-viewer>
+      <p class="viewer-hint">On a phone, tap "View in your space" to place it in AR.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
